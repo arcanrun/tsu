@@ -44,8 +44,22 @@ class Model(IModel):
 
     def show_all(self):
         res = self.data_base.show_all()
-        # for i in res:
-        #     print(i)
+        # print(len(res))
+        # for k,v in res.items():
+        #     print('\t \t=====',k,'======')
+        #     if type(v).__name__ == 'dict':
+        #         for k2,v2 in v.items():
+        #             print('\t{} : {}'.format(k2,v2))
+
+        return res
+
+    def show_by_center(self, center_name):
+        res = self.data_base.find_by_key(center_name)
+
+        return res
+
+    def list_centers(self):
+        res = self.data_base.get_keys()
         return res
 
     @staticmethod
@@ -55,5 +69,10 @@ class Model(IModel):
         last_line = line
         return last_line
 
+    def show_message_by_time(self):
+        pass
+
+    def show_by_phrase(self):
+        pass
 
 
