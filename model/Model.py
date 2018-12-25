@@ -1,5 +1,7 @@
 from interfaces.IModel import IModel
 import re
+from datetime import datetime
+
 
 class Model(IModel):
     def __init__(self, data_base=None):
@@ -69,9 +71,32 @@ class Model(IModel):
         last_line = line
         return last_line
 
-    def show_message_by_time(self):
-        pass
+    def show_message_by_time(self, center_name, time):
+        center = self.show_by_center(center_name)
+        arr_time = time.split('-')
+        first_time = arr_time[0]
+        last_time = arr_time[1]
 
+        # converter to time object:
+        first_time = datetime.strptime(first_time, '%H:%M').time()
+        last_time = datetime.strptime(last_time, '%H:%M').time()
+        # print(first_time, last_time)
+
+
+
+        if first_time > last_time:
+            temp = first_time
+            first_time = last_time
+            last_time = temp
+
+
+        output = {}
+        for key, val in center.items():
+            keyTime = datetime.strptime(key, '%H:%M').time()
+            if keyTime >= first_time and keyTime <= last_time:
+                output[key] = val
+
+        return output
     def show_by_phrase(self):
         pass
 

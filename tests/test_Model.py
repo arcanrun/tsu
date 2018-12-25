@@ -69,6 +69,21 @@ class TestModel(unittest.TestCase):
 
         res = self.model.list_centers()
 
-        self.assertEqual({'length':2, 'keys': ['south','sever']}, res)
+        self.assertEqual({'length': 2, 'keys': ['south','sever']}, res)
 
-    
+    def test_get_messages_by_center_and_time_interval(self):
+        # center_name_1 = 'sever'
+        # time = '04:54-12:00'
+        #
+        # res_1 = self.model.show_message_by_time(center_name_1, time)
+        # assert_res_1 = {'05:10': 'sever severseverseversever severseverseversever severseversever', '11:10': 'sever severseverseversever severseverseversever'}
+        # self.assertEqual(assert_res_1, res_1)
+
+        # ==========
+        center_name_2 = 'south'
+        time = '21:30-23:59'
+
+        res_2 = self.model.show_message_by_time(center_name_2, time)
+        assert_res_2 = {"22:10":"south"}
+        self.assertEqual(assert_res_2, res_2)
+

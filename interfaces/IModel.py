@@ -19,7 +19,7 @@ class IModel(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def show_message_by_time(self):
+    def show_message_by_time(self, center_name, time):
         pass
 
     @abc.abstractmethod
