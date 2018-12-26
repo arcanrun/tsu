@@ -70,9 +70,10 @@ class CLIView(IObserver):
     def show_message_by_time(self):
         arr_centers = self.show_list_centers()
         print('Введите подразделение:')
-        n = int(input())-1
+
         center_name = ''
         try:
+            n = int(input()) - 1
             center_name = arr_centers[n]
         except:
             print(['Input Error!'])
