@@ -87,3 +87,13 @@ class TestModel(unittest.TestCase):
         assert_res_2 = {"22:10":"south"}
         self.assertEqual(assert_res_2, res_2)
 
+    def test_show_messages_by_phrase(self):
+        center_name_1 = 'sever'
+        phrase_1 = 'sever-1 sever-1 sever-1 sever-1 sever-1 sever-1 sever-1 sever-1'
+
+        res_1 = self.model.show_by_phrase(center_name_1, phrase_1)
+        assert_res_1 = {"02:10":"sever-1 sever-1 sever-1 sever-1 sever-1 sever-1 sever-1 sever-1"}
+
+
+        self.assertEqual(assert_res_1, res_1)
+

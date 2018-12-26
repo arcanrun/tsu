@@ -2,6 +2,15 @@ import abc
 
 
 class IModel(metaclass=abc.ABCMeta):
+
+    @abc.abstractmethod
+    def subscribe(self, observer):
+        pass
+
+    @abc.abstractmethod
+    def notify_subscribers(self, msg):
+        pass
+
     @abc.abstractmethod
     def add(self, center_name, file_path):
         pass
@@ -23,5 +32,5 @@ class IModel(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def show_by_phrase(self):
+    def show_by_phrase(self, center_name, phrase):
         pass

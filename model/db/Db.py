@@ -32,6 +32,7 @@ class Db(IDb):
     def find_by_key(self, key):
         db = shelve.open(self.dbName)
         return db[key]
+
     def get_keys(self):
         db = shelve.open(self.dbName)
         res = {'length': len(list(db.keys())), 'keys': list(db.keys())}
@@ -45,18 +46,6 @@ class Db(IDb):
             all_data[k] = v
 
         return all_data
-            # if type(v).__name__ == 'dict':
-            #     print(k, v)
-            #
-            #     for innK, innV in v.items():
-            #         # print(k,innK)
-            #         inner_data[innK] = innV
-            #
-            #     all_data[k] = inner_data
-            # else:
-            #     all_data[k] = v
 
-
-        return all_data
 
 

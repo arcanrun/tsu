@@ -6,6 +6,15 @@ from datetime import datetime
 class Model(IModel):
     def __init__(self, data_base=None):
         self.data_base = data_base
+        self.subscribers = []
+
+    def subscribe(self, observer):
+        self.subscribers.append(observer)
+
+    def notify_subscribers(self, msg):
+        for i in self.subscribers:
+            i.update(msg)
+
 
     def add(self, center_name, file_path):
         pattern_time_key = r'^(([01]\d|2[0-3]):([0-5]\d)|24:00)$'
@@ -19,24 +28,27 @@ class Model(IModel):
         # =============================
 
         file = open(file_path)
+        try:
+            for line in file:
 
-        for line in file:
+                isKey = line.split(' ')[0]
+                if re.match(pattern_time_key, isKey):
+                    if len(self.time) != 0:
+                        self.data_base.add_message(center_name, self.time, self.body)
+                        self.time = ''
+                        self.body = ''
 
-            isKey = line.split(' ')[0]
-            if re.match(pattern_time_key, isKey):
-                if len(self.time) != 0:
+                    self.time = isKey
+                    self.body += line[len(isKey):]
+                else:
+                    self.body += line
+
+
+                if last_line == line:
                     self.data_base.add_message(center_name, self.time, self.body)
-                    self.time = ''
-                    self.body = ''
-
-                self.time = isKey
-                self.body += line[len(isKey):]
-            else:
-                self.body += line
-
-
-            if last_line == line:
-                self.data_base.add_message(center_name, self.time, self.body)
+                self.notify_subscribers('[New reports has been added!]')
+        except:
+                self.notify_subscribers('[Some errors occured while adding msg!]')
 
 
 
@@ -46,12 +58,6 @@ class Model(IModel):
 
     def show_all(self):
         res = self.data_base.show_all()
-        # print(len(res))
-        # for k,v in res.items():
-        #     print('\t \t=====',k,'======')
-        #     if type(v).__name__ == 'dict':
-        #         for k2,v2 in v.items():
-        #             print('\t{} : {}'.format(k2,v2))
 
         return res
 
@@ -97,7 +103,16 @@ class Model(IModel):
                 output[key] = val
 
         return output
-    def show_by_phrase(self):
-        pass
+    def show_by_phrase(self, center_name, phrase):
+        center = self.show_by_center(center_name)
+
+        output = {}
+        for k,v in center.items():
+            if phrase in v:
+                output[k] = v
+
+
+        return output
+
 
 
