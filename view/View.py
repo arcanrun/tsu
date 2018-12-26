@@ -11,10 +11,13 @@ class CLIView(IObserver):
     def main_menu(self):
         print(
             """
-            1. Add report
-            2. Show all reports
-            3. Search by time
-            4. Exit
+            1. Добавить вводную
+            2. Показать все вводные
+            3. Поиск по времени
+            4. Список всех подразделений
+            5. Вводные по подразделению
+            6. Поиск по фразе
+            7. Exit
             """
         )
         n = input()
@@ -22,6 +25,9 @@ class CLIView(IObserver):
             '1': self.add_report,
             '2': self.show_all_reports,
             '3': self.show_message_by_time,
+            '4': self.display_list_centers,
+            '5': self.show_by_center,
+            '6': self.show_by_phrase
 
 
         }
@@ -59,12 +65,85 @@ class CLIView(IObserver):
         self.main_menu()
 
     def show_message_by_time(self):
+        arr_centers = self.show_list_centers()
         print('Введите подразделение:')
-        center_name = input()
+        n = int(input())-1
+        center_name = ''
+        try:
+            center_name = arr_centers[n]
+        except:
+            print(['Input Error!'])
+            self.main_menu()
         print('Введите промежуток времени:')
         time = input()
-        res = self.controller.show_message_by_time(center_name, time)
-
-        for k,v in res.items():
-            print('{}:{}'.format(k,v))
+        try:
+            res = self.controller.show_message_by_time(center_name, time)
+        except:
+            print('[Erroe while fetchng!]')
+            self.main_menu()
+        CLIView.showCentersMessages(res)
         self.main_menu()
+
+
+    def show_by_center(self):
+        centers_arr = self.show_list_centers()
+        try:
+            n = int(input())-1
+        except:
+            print("[Input error]")
+            self.main_menu()
+        center = self.model.show_by_center(centers_arr[n])
+        CLIView.showCentersMessages(center)
+        self.main_menu()
+
+    def show_list_centers(self):
+
+        res = self.model.list_centers()
+
+        if res['length'] == 0 or len(res) == 0:
+            print('Нет вводных')
+
+        print('Всего: {}'.format(res['length']))
+        counter = 1
+        for i in res['keys']:
+            print('{}) {}'.format(counter,i))
+            counter += 1
+        return res['keys']
+
+    def display_list_centers(self):
+        res = self.model.list_centers()
+
+        if res['length'] == 0 or len(res) == 0:
+            print('Нет вводных')
+
+        print('Всего: {}'.format(res['length']))
+        counter = 1
+        for i in res['keys']:
+            print('{}) {}'.format(counter, i))
+            counter += 1
+        self.main_menu()
+
+    def show_by_phrase(self):
+        print("Выбирите подразделние:")
+        arr_centers = self.show_list_centers()
+        center_name = ''
+        try:
+            n = int(input())-1
+            center_name = arr_centers[n]
+        except:
+            print(['Input error!'])
+            self.main_menu()
+        print('Введите фразу:')
+        phrase = input()
+        res = self.model.show_by_phrase(center_name, phrase)
+        CLIView.showCentersMessages(res)
+        self.main_menu()
+
+
+    @staticmethod
+    def showCentersMessages(dict):
+        if(len(dict) == 0):
+            print('[Nothing found!]')
+            return False
+        for k,v in dict.items():
+            print('{} : {}'.format(k,v))

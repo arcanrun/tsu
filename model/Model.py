@@ -79,6 +79,8 @@ class Model(IModel):
 
     def show_message_by_time(self, center_name, time):
         center = self.show_by_center(center_name)
+        self.notify_subscribers('[Name not found!]')
+        
         arr_time = time.split('-')
         first_time = arr_time[0]
         last_time = arr_time[1]
