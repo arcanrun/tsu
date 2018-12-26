@@ -34,3 +34,4 @@ class IModel(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def show_by_phrase(self, center_name, phrase):
         pass
+

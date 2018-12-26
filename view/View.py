@@ -1,4 +1,6 @@
 from  interfaces.IObserver import IObserver
+import sys
+
 
 class CLIView(IObserver):
     def __init__(self, model, controller):
@@ -27,7 +29,8 @@ class CLIView(IObserver):
             '3': self.show_message_by_time,
             '4': self.display_list_centers,
             '5': self.show_by_center,
-            '6': self.show_by_phrase
+            '6': self.show_by_phrase,
+            '7': self.exit
 
 
         }
@@ -139,6 +142,9 @@ class CLIView(IObserver):
         CLIView.showCentersMessages(res)
         self.main_menu()
 
+
+    def exit(self):
+        sys.exit('')
 
     @staticmethod
     def showCentersMessages(dict):

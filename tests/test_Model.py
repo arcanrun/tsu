@@ -97,3 +97,9 @@ class TestModel(unittest.TestCase):
 
         self.assertEqual(assert_res_1, res_1)
 
+    def test_for_pirnting_hello_world(self):
+        assert_res = 'hello'
+
+        res = self.model.hello()
+
+        self.assertEqual(assert_res, res)
